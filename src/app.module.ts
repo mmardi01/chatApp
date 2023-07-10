@@ -3,8 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 
 
@@ -17,7 +17,7 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: {expiresIn: '2d'}
     })
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, PrismaService, UserService],
+  controllers: [AppController,AuthController],
+  providers: [AppService, PrismaService,AuthService],
 })
 export class AppModule {}

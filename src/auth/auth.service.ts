@@ -5,7 +5,7 @@ import  * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class UserService {
+export class AuthService {
     constructor(private prisma: PrismaService,private jwt: JwtService) {}
     async create(data:userDto) {
         try {
@@ -33,5 +33,15 @@ export class UserService {
                 throw new ForbiddenException('password incorrect');
             const payload = { sub: user.id, username : user.userName};
             return {access_token: await this.jwt.signAsync(payload)};
+    }
+    async getProfile(req: Request) {
+        const data = req['user'];
+        const user = await this.prisma.user.findUnique({
+            where: {
+                userName: data.username,
+            },
+        });
+        delete user.password;
+        return user;                          
     }
 }
