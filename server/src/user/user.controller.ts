@@ -8,8 +8,8 @@ import { Request } from 'express';
 export class UserController {
   constructor(private userService: UserService) {}
   @Get()
-  getAll() {
-    return this.userService.getAllUsers();
+  getAll(@Req() req: Request) {
+    return this.userService.getAllUsers(req);
   }
   @Get('profile')
   getProfil(@Req() req: Request) {

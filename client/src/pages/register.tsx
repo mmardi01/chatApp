@@ -11,7 +11,7 @@ interface Input {
   password: string;
 }
 
-export default function register() {
+export default function Register() {
   const router = useRouter();
   const [input, setInput] = useState<Input>({
     firstName: "",
@@ -23,9 +23,10 @@ export default function register() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    axios.post('http://localhost:3333/auth/signup',input)
+    axios.post('http://localhost:3333/auth/signup',input,{withCredentials:true})
     .then(res => {
       console.log(res);
+      router.push('/')
     })
     .catch(err=> {
       console.log(err);

@@ -9,27 +9,13 @@ export class ChatService {
       const chat = await this.prisma.chat.create({
         data: {
           users: {
-            create: [
-              //userChat
-              {
-                user: {
-                  connect: {
-                    id: user.sub,
-                  },
-                },
-              },
-              {
-                user: {
-                  connect: {
-                    id: id,
-                  },
-                },
-              },
-            ],
-          },
+            connect: {
+              id: user.sub
+            },
+          }
         },
       });
-      return chat;
+      return this.getConversation(user.sub,chat.id);
     } catch (error) {
       throw error;
     }
@@ -60,13 +46,13 @@ export class ChatService {
       throw new UnauthorizedException();
     }
   }
-  async getConversation(id: string, chatId: string) {
-    const conversation = this.prisma.message.findMany({
-      where: {
-        userId: id,
-        chatId: chatId,
-      },
+  async getConversation(userId: string, chatId: string) {
+    const conversation = await this.prisma.chat.findMany({
+      include: {
+        users: true
+      }
     });
+
     return conversation;
   }
 }

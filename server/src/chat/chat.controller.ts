@@ -10,6 +10,7 @@ import {
 import { ChatService } from './chat.service';
 import { Request } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { useContainer } from 'class-validator';
 
 @UseGuards(AuthGuard)
 @Controller('chat')
@@ -37,7 +38,7 @@ export class ChatController {
 
   @Get('get')
   getConversation(@Req() req: Request, @Query('id') id: string) {
-    const userId = req['user'].id;
+    const userId = req['user'].sub;
     return this.chatService.getConversation(userId, id);
   }
 }

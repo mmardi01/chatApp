@@ -17,11 +17,11 @@ export class UserService {
     delete user.password;
     return user;
   }
-  async getAllUsers() {
+  async getAllUsers(req: Request) {
     const users = await this.prisma.user.findMany();
-
+    const currentUser = req['user']
     users.map((user) => delete user.password);
-
-    return users;
+    const res = users.filter((user) => user.id !== currentUser.sub)
+    return res;
   }
 }
