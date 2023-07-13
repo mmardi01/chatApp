@@ -19,7 +19,7 @@ model User {
   email     String     @unique
   chat      Chat[]
   messages Message []
-  group UserGroup[]
+  group Group[]
   // owner Owner []
 }
 
@@ -52,20 +52,20 @@ model Message {
   content String
 }
 
-model UserGroup {
-  id   String     @unique @default(uuid())
-  user User @relation(fields: [userId],references: [id])
-  userId String
-  group Group @relation(fields: [groupId],references: [id])  
-  groupId String
-  isOwner Boolean @default(false)
-  isAdmin Boolean @default(false)
-}
+// model UserGroup {
+//   id   String     @unique @default(uuid())
+//   user User @relation(fields: [userId],references: [id])
+//   userId String
+//   group Group @relation(fields: [groupId],references: [id])  
+//   groupId String
+//   isOwner Boolean @default(false)
+//   isAdmin Boolean @default(false)
+// }
 
 model Group {
-  id   String     @unique @default(uuid())
-  members UserGroup []
-  messages Message[]
+  id   String  @id   @unique @default(uuid())
+  members User []
+  messages Message []
   createdAt DateTime @default(now())
   updatedAt  DateTime @updatedAt
   // owner Owner []
