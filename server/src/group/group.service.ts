@@ -8,23 +8,8 @@ export class GroupService {
   async createGroup(id: string) {
     try {
 
-      const group = await this.prisma.group.create({
-        data: {
-          members: {
-            create: [
-              {
-                user: {
-                  connect: {
-                    id: id,
-                  }
-                },
-                isOwner: true,
-              },
-            ],
-          },
-        },
-      });
-      return group;
+      // const group = await this.prisma.group.create();
+      // return group;
     }
     catch(e) {
       console.log(e);

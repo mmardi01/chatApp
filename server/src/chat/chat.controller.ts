@@ -22,6 +22,11 @@ export class ChatController {
     return this.chatService.createChat(req['user'], id);
   }
 
+  @Get('contacts')
+  getContacts(@Req() req: Request) {
+    return this.chatService.getContacts(req['user'].sub);
+  }
+
   @Post('send')
   sendMessage(
     @Body('message') message: string,

@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Chat } from '@prisma/client';
 import { connect } from 'http2';
 import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
@@ -7,6 +8,28 @@ export class ChatService {
 
   async createChat(user: { sub: string; username: string }, id: string) {
     try {
+
+      const users = await this.prisma.user.findUnique({
+        where: {
+          id:user.sub
+        },
+        select: {
+          chat: {
+            include: {
+              users: true
+            }
+          }
+        }
+      });
+      users.chat.map(item => {
+          // console.log(item.users)
+          if (item.users[0].id === id && item.users[1].id === user.sub)
+            throw new UnauthorizedException('Chat already exist')
+          if (item.users[1].id === id && item.users[0].id === user.sub)
+            throw new UnauthorizedException('Chat already exist')
+      })
+      // console.log(chats.chat);
+      
       const chat = await this.prisma.chat.create({
         data: {
           users: {
@@ -46,6 +69,9 @@ export class ChatService {
             },
           },
         },
+        include: {
+          sender: true
+        }
       });
       return msg;
     } catch {
@@ -59,7 +85,11 @@ export class ChatService {
       },
       include: {
         users: true,
-        messages: true
+        messages: {
+          include: {
+            sender: true
+          }
+        }
       },
       
     });
@@ -67,5 +97,28 @@ export class ChatService {
     const conv = conversation.users.filter(user => user.id === userId)
     if (!conv) throw new UnauthorizedException();
     return conversation;
+  }
+  async getContacts(id: string) {
+
+    const contacts = await this.prisma.user.findUnique({
+      where: {
+        id : id
+      },
+      select:{
+        chat: {
+          include: {
+            users: {
+              where:{
+                NOT: {
+                  id:id
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    return contacts.chat;
   }
 }

@@ -23,7 +23,7 @@ export default function Register() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    axios.post('http://localhost:3333/auth/signup',input,{withCredentials:true})
+    axios.post('http://localhost:5555/auth/signup',input,{withCredentials:true})
     .then(res => {
       console.log(res);
       router.push('/')

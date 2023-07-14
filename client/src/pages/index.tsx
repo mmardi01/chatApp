@@ -7,7 +7,7 @@ export default function Home() {
   const [loggedId, setLoggedIn] = useState(false);
 
   useEffect(()=> {
-    axios.get('http://localhost:3333/user/profile',{withCredentials:true})
+    axios.get('http://localhost:5555/user/profile',{withCredentials:true})
     .then(res=>{
       setLoggedIn(true)
       console.log(res.data)
