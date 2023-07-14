@@ -22,13 +22,11 @@ export class ChatService {
         }
       });
       users.chat.map(item => {
-          // console.log(item.users)
           if (item.users[0].id === id && item.users[1].id === user.sub)
             throw new UnauthorizedException('Chat already exist')
           if (item.users[1].id === id && item.users[0].id === user.sub)
             throw new UnauthorizedException('Chat already exist')
       })
-      // console.log(chats.chat);
       
       const chat = await this.prisma.chat.create({
         data: {
