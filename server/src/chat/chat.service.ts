@@ -82,7 +82,13 @@ export class ChatService {
         id:chatId
       },
       include: {
-        users: true,
+        users: {
+          where:{
+            NOT:{
+              id:userId
+            }
+          }
+        },
         messages: {
           include: {
             sender: true

@@ -52,7 +52,7 @@ export default function HomePage() {
           console.log(err);
         })
     },[])
-
+    
     return (
     <div className="h-full w-full flex">
        <Users users={users} />

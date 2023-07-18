@@ -10,7 +10,6 @@ import {
 import { ChatService } from './chat.service';
 import { Request } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { useContainer } from 'class-validator';
 
 @UseGuards(AuthGuard)
 @Controller('chat')
