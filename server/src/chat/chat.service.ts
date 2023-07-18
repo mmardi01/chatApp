@@ -94,6 +94,7 @@ export class ChatService {
     conversation.users.map(user => delete user.password)
     const conv = conversation.users.filter(user => user.id === userId)
     if (!conv) throw new UnauthorizedException();
+    conversation.messages?.reverse()
     return conversation;
   }
   async getContacts(id: string) {
@@ -116,7 +117,6 @@ export class ChatService {
         }
       }
     });
-    
     return contacts.chat;
   }
 }

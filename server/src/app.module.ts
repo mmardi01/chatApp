@@ -10,6 +10,7 @@ import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
 import { GroupController } from './group/group.controller';
 import { GroupService } from './group/group.service';
+import { MessageGateway } from './message/message.gateway';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { GroupService } from './group/group.service';
     ChatService,
     UserService,
     GroupService,
+    MessageGateway,
   ],
 })
 export class AppModule {}

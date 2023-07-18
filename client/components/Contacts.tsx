@@ -24,7 +24,7 @@ export default function Contacts({ contacts,setConversation }: Props) {
       <div>
         {
           contacts?.map(contact => (
-            <div onClick={()=>getConversation(contact.id)} className="text-lg flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-8">
+            <div key={contact.id} onClick={()=>getConversation(contact.id)} className="text-lg flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-8">
               <h1 >{contact.users[0].userName}</h1>
             </div>
           ))
