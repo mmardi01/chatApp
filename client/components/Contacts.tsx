@@ -10,7 +10,6 @@ export default function Contacts({ contacts,setConversation }: Props) {
   const getConversation = (id: string) => {
     axios.get(`http://localhost:5555/chat/get?id=${id}`,{withCredentials: true})
     .then(res=> {
-      console.log(res.data);
       setConversation(res.data)
     })
     .catch(err => {

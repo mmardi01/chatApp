@@ -44,8 +44,28 @@ export class MessageService {
                 }
             })
             user.socketId.map(sock => {
-                console.log(sock.id)
                 ws.to(sock.id).emit('receiveMessage',message)
+            });
+            return 'message sent'
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+       async handleTyping(ws:Server, receiverId: string) {
+        try{
+                console.log(receiverId)
+            const user = await this.prisma.user.findUnique({
+                where:{
+                    id:receiverId,
+                },
+                select: {
+                    userName:true,
+                    socketId: true
+                }
+            })
+            user.socketId.map(sock => {
+                ws.to(sock.id).emit('typing')
             });
             return 'message sent'
         }

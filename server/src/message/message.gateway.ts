@@ -44,6 +44,10 @@ export class MessageGateway implements OnGatewayInit, OnGatewayConnection, OnGat
     
     return this.messagService.sendMessage(this.wss,message,receiverId);
   }
-
+    @SubscribeMessage('typing')
+  handleTyping(client: Socket, receiverId: string){
+    
+    return this.messagService.handleTyping(this.wss,receiverId);
+  }
 }
 
