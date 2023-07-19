@@ -34,20 +34,22 @@ export default function ChatBox({conversation}: {conversation:Conversation}) {
     socket?.on('receiveMessage',(data)=> {
       const msg : Message = data
       setIstyping(false)
-      setNewMessage(msg)
-      console.log(new Date(msg.createdAt))
-      console.log(new Date(msg.createdAt).getHours(),new Date(msg.createdAt).getMinutes())
+      if(msg.userId === conversation.users[0].id)
+        setNewMessage(msg)
     })
-    socket?.on("typing", () => {
+    socket?.on("typing", (id) => {
       lastTimeTiping = new Date().getTime()
-      setIstyping(true);
-      setTimeout(() => {
-        const now = new Date().getTime()
-        const diff = now - lastTimeTiping
-        if (diff >= 1000)
+      console.log(id,conversation.users[0].id)
+      if (id === conversation.users[0].id) {
+        setIstyping(true);
+        setTimeout(() => {
+          const now = new Date().getTime()
+          const diff = now - lastTimeTiping
+          if (diff >= 1000)
           setIstyping(false)
-      },1000)
-    })
+        },1000)
+      }
+      })
   },[socket])
   useEffect(()=>{
     if(newMessage)
@@ -60,7 +62,8 @@ export default function ChatBox({conversation}: {conversation:Conversation}) {
   } 
   return (
     <div className="bg-[#2a2a2e] basis-2/3 h-full z-0 justify-items-center">
-      <div className="h-[94%]  overflow-y-scroll flex flex-col-reverse p-6 scroll-smooth">
+      <div className="w-full h-[60px] bg-[#232327] shadow-xl italic text-white font-bold text-2xl  p-3"><h1 className="ml-5">{conversation.users[0].userName}</h1></div>
+      <div className="h-[90%]  overflow-y-scroll flex flex-col-reverse p-6 scroll-smooth ">
         {
           isTyping ?
           <p className="text-white">typing...</p> : null
@@ -86,17 +89,18 @@ export default function ChatBox({conversation}: {conversation:Conversation}) {
           )
           )}
       </div>
-      <form className="w-full flex justify-center px-8" onSubmit={sendMessage}>
+      <form className="w-full flex justify-center px-8 relative" onSubmit={sendMessage}>
         <input
           value={message}
           type="text"
           onChange={(e) => {
-            socket?.emit('typing',conversation.users[0].id)
+            socket?.emit('typing',conversation.users[0].id,user?.id)
             setMessage(e.target.value);
           }}
           placeholder="Send a message"
           className="w-[100%] text-white text-2xl bg-transparent placeholder:text-2xl outline-none border-b-2 py-3"
         />
+        <button type="submit" className="absolute text-2xl text-white font-bold right-10 top-4">send</button>
       </form>
     </div>
   );

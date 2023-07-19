@@ -50,7 +50,7 @@ export class MessageService {
             console.log(e)
         }
     }
-       async handleTyping(ws:Server, receiverId: string) {
+       async handleTyping(ws:Server, receiverId: string,senderId:string) {
         try{
             const user = await this.prisma.user.findUnique({
                 where:{
@@ -62,7 +62,7 @@ export class MessageService {
                 }
             })
             user.socketId.map(sock => {
-                ws.to(sock.id).emit('typing')
+                ws.to(sock.id).emit('typing',senderId)
             });
             return 'message sent'
         }
