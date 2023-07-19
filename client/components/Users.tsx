@@ -1,17 +1,20 @@
 import axios from "axios";
 import { Contact, User } from "./HomePage"
-import { AiFillPlusCircle } from 'react-icons/ai'
-import { connect } from "http2";
+import { AiFillPlusCircle,AiOutlineCheck } from 'react-icons/ai'
+
+
 interface Props {
     users: User[];
+    setContacts : any
 }
 
-export default function Users({ users }: Props) {
+export default function Users({ users,setContacts }: Props) {
 
     const createChat = (id: string) => {
         axios.get(`http://localhost:5555/chat/create?id=${id}`,{withCredentials: true})
         .then(res => {
-            console.log(res.data);
+            setContacts((prev: Contact[]) => [...prev,res.data])
+            console.log(res.data)
         })
         .catch(err => {
             console.log(err);
@@ -25,10 +28,15 @@ export default function Users({ users }: Props) {
             <div>
                 {
                     users.map((user: User) => {
-                        return (
-                            <div key={user.id} onClick={() => createChat(user.id)} className="text-xl flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-8">
+                        return ( !user.friend ?
+                            <div key={user.id} onClick={() => {createChat(user.id);user.friend = true}} className="text-xl flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-8">
                                 <p className="w-[100px]">{user.userName}</p>
                                 <AiFillPlusCircle />
+                            </div>
+                            :
+                            <div  className="text-xl flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-8">
+                                <p className="w-[100px]">{user.userName}</p>
+                                <AiOutlineCheck className="text-green-500"/>
                             </div>
                         )
                     })

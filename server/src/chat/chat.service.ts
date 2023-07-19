@@ -37,11 +37,28 @@ export class ChatService {
               }, {
                 id: id
               }
-            ]
+            ],
           },
 
         },
       });
+      await this.prisma.user.update({
+        where:{
+          id:user.sub
+        },
+        'data':{
+          contacts:{
+            connect:{
+              id:id
+            },
+          },
+          contactedbBy:{
+            connect:{
+              id:id
+            }
+          }
+        },
+      })
       return this.getConversation(user.sub, chat.id);
     } catch (error) {
       throw error;

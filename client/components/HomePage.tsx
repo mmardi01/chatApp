@@ -3,13 +3,10 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import Contacts from "./Contacts";
 import ChatBox from "./ChatBox";
-
 export interface User {
     id: string;
     userName: string;
-    firstName: string;
-    lastName: string;
-    email: string;
+    friend: boolean;
 }
 
 export interface Message {
@@ -18,6 +15,7 @@ export interface Message {
     sender: User;
     chatId:string;
     content:string;
+    createdAt:string
 }
 
 export interface Conversation {
@@ -55,7 +53,7 @@ export default function HomePage() {
     
     return (
     <div className="h-full w-full flex">
-       <Users users={users} />
+       <Users users={users} setContacts={setContacts} />
        <Contacts contacts={contacts as Contact[]} setConversation={setConversation}/>
        {
           conversation ? 

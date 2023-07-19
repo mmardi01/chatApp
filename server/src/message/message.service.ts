@@ -27,13 +27,11 @@ export class MessageService {
             return socket;
         }
         catch (e){
-            // throw new UnauthorizedException(e);
             
         }
     }
     async sendMessage(ws:Server,message:Message,receiverId: string) {
         try{
-                console.log(receiverId)
             const user = await this.prisma.user.findUnique({
                 where:{
                     id:receiverId,
@@ -54,7 +52,6 @@ export class MessageService {
     }
        async handleTyping(ws:Server, receiverId: string) {
         try{
-                console.log(receiverId)
             const user = await this.prisma.user.findUnique({
                 where:{
                     id:receiverId,

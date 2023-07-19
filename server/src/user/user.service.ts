@@ -18,10 +18,25 @@ export class UserService {
     return user;
   }
   async getAllUsers(req: Request) {
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({
+      include:{
+        contacts:{
+          where:{
+            id:req['user'].sub
+          },
+          select:{
+            id:true
+          }
+        }
+      }
+    });
     const currentUser = req['user']
     users.map((user) => delete user.password);
     const res = users.filter((user) => user.id !== currentUser.sub)
-    return res;
+    let data :any[] = [];
+    const user = res.map(user => {
+      data.push({userName:user.userName,id:user.id,friend:user.contacts.length ? true:false})
+    })
+    return data;
   }
 }

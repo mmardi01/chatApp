@@ -21,6 +21,8 @@ model User {
   messages Message []
   group Group[]
   socketId SocketId []
+  contacts User [] @relation("contacts")
+  contactedbBy User [] @relation("contacts")
   // owner Owner []
 }
 
