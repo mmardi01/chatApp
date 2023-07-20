@@ -18,12 +18,12 @@ export default function Contacts({ contacts,setConversation }: Props) {
   }
   
   return (
-    <div className="bg-[#232327] z-10 h-full basis-1/6 shadow-[0_8px_6px_4px_rgba(0,0,0,0.3)] p-10">
+    <div className="h-[50%] overflow-y-scroll">
       <h1 className="text-white text-2xl">Contacts: </h1>
       <div>
         {
           contacts?.map(contact => (
-            <div key={contact.id} onClick={()=>getConversation(contact.id)} className="text-lg flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-8">
+            <div key={contact.id} onClick={()=>getConversation(contact.id)} className="text-lg flex items-center cursor-pointer  duration-300 hover:text-white text-[#3e3e45] mt-4">
               <h1 >{contact.users[0].userName}</h1>
             </div>
           ))
