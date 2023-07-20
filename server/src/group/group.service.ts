@@ -2,7 +2,6 @@ import { ForbiddenException, Injectable, NotFoundException, UnauthorizedExceptio
 import { PrismaService } from '../prisma/prisma.service';
 import { groupDto } from './group.dto';
 import * as bcrypt from 'bcrypt';
-import { group } from 'console';
 
 @Injectable()
 export class GroupService {

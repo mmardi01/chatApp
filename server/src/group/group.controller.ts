@@ -13,30 +13,30 @@ export class GroupController {
 
 	@Post('create') 
 	createGroup(@Req() req: Request,@Body() grpData: groupDto) {
-		return this.groupService.creatGroup(req['userAuth'].id, grpData);
+		return this.groupService.creatGroup(req['user'].sub, grpData);
 	}
 
 	@Get('getmygroups')
 	getMyGroup(@Req() req : Request){
-		return this.groupService.getMyGroups(req['userAuth'].id);
+		return this.groupService.getMyGroups(req['user'].sub);
 	}
 
 	@Get('get')
 	getGroup(@Req() req: Request,@Query('id') groupId: string){
-		return this.groupService.getGroup(req['userAuth'].id, groupId)
+		return this.groupService.getGroup(req['user'].sub, groupId)
 	}
 
 	@Post('send')
 	sendMessage(@Req() req: Request,@Query('id') id: string, @Body('message') message: string) {
-		return this.groupService.sendMessage(req['userAuth'].id, message, id);
+		return this.groupService.sendMessage(req['user'].sub, message, id);
 	}
 	@Get('search')
 	searchForGroups(@Req() req: Request) {
-		return this.groupService.searchForGroups(req['userAuth'].id);
+		return this.groupService.searchForGroups(req['user'].sub);
 	}
 	@Delete('delete')
 	deleteGroup(@Req() req: Request,@Query('id') groupId: string) {
-		return this.groupService.deleteGroup(req['userAuth'].id,groupId);
+		return this.groupService.deleteGroup(req['user'].sub,groupId);
 	}
 }
 
