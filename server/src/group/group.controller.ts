@@ -13,6 +13,7 @@ export class GroupController {
 
 	@Post('create') 
 	createGroup(@Req() req: Request,@Body() grpData: groupDto) {
+		console.log(grpData)
 		return this.groupService.creatGroup(req['user'].sub, grpData);
 	}
 

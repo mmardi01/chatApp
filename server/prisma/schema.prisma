@@ -76,7 +76,6 @@ model Group {
   owner     User      @relation("owner", fields: [ownerId], references: [id])
   ownerId   String
   admins    User[]    @relation("admin")
-  image     String
   name      String
   type      String
   password  String?

@@ -7,8 +7,8 @@ import * as bcrypt from 'bcrypt';
 export class GroupService {
 	constructor(private prisma : PrismaService) {}
 
-	async creatGroup(id:string,{name,password,image,type}: groupDto) {
-		
+	async creatGroup(id:string,{name,password,type}: groupDto) {
+		// console.log(name,password,type)
 		let hash : string = '';
 		if (type === 'protected' && password.length < 4)
 			throw new ForbiddenException('password length must be at least 4 charachters')
@@ -20,7 +20,6 @@ export class GroupService {
 			const group = await this.prisma.group.create({
 				data: {
 					name:name,
-					image: image,
 					type:type,
 					password: hash,
 					owner: {
@@ -37,7 +36,6 @@ export class GroupService {
 				select: {
 					id:true,
 					name:true,
-					image:true,
 					type:true,
 					owner:{
 						select:{
@@ -64,7 +62,6 @@ export class GroupService {
 						select: {
 							id:true,
 							name:true,
-							image:true,
 							type:true,
 						},
 						orderBy:{
@@ -96,8 +93,7 @@ export class GroupService {
 						select:{
 							id:true,
 							name:true,
-							image:true,
-							messages:true,
+									messages:true,
 							type:true,
 							owner: {
 								select:{

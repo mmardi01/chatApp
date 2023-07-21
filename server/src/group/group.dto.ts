@@ -1,11 +1,10 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class groupDto {
   @IsNotEmpty()
   name: string;
   @IsNotEmpty()
-  image: string;
-  @IsNotEmpty()
   type: string;
+  @IsOptional()
   password: string
 }

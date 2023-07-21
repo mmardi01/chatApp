@@ -30,10 +30,16 @@ export interface Contact {
     users: User[];
 }
 
+export interface Group {
+  id: string;
+  name: string;
+}
+
 export default function HomePage() {
     
     const [users , setUsers] = useState<User[]>([]);
-    const [contacts, setContacts] = useState<Contact[] | null>(null)
+    const [contacts, setContacts] = useState<Contact[] | null>(null);
+    const [groups, setGroups] = useState<Group[] | null>(null);
     const [conversation, setConversation] = useState<Conversation>()
     useEffect(()=> {
         axios.get('http://localhost:5555/user', {withCredentials:true})
@@ -50,6 +56,15 @@ export default function HomePage() {
         .catch(err=> {
           console.log(err);
         })
+        axios.get("http://localhost:5555/group/getmygroups", {
+            withCredentials: true,
+          })
+          .then((res) => {
+            setGroups(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
     },[])
     
     return (
@@ -57,7 +72,7 @@ export default function HomePage() {
        <Users users={users} setContacts={setContacts} />
        <div className="bg-[#232327] z-10 h-full basis-1/6 shadow-[0_8px_6px_4px_rgba(0,0,0,0.3)]  p-10">
         <Contacts contacts={contacts as Contact[]} setConversation={setConversation}/>
-        <Groups/>
+        <Groups groups={groups as Group[]}/>
        </div>
        {
           conversation ? 
