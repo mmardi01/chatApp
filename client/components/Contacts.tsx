@@ -4,13 +4,15 @@ import { Contact } from "./HomePage"
 interface Props {
   contacts: Contact[]
   setConversation: any
+  setGroupConversation: any
 }
-export default function Contacts({ contacts,setConversation }: Props) {
+export default function Contacts({ contacts,setGroupConversation,setConversation }: Props) {
 
   const getConversation = (id: string) => {
     axios.get(`http://localhost:5555/chat/get?id=${id}`,{withCredentials: true})
     .then(res=> {
       setConversation(res.data)
+      setGroupConversation(null)
     })
     .catch(err => {
       console.log(err);

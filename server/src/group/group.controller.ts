@@ -26,7 +26,10 @@ export class GroupController {
 	getGroup(@Req() req: Request,@Query('id') groupId: string){
 		return this.groupService.getGroup(req['user'].sub, groupId)
 	}
-
+	@Post('join')
+	joinGroup(@Req() req: Request,@Query('id') groupId: string,@Body('password') password: string) {
+		return this.groupService.joinGroup(req['user'].sub,groupId,password);
+	}
 	@Post('send')
 	sendMessage(@Req() req: Request,@Query('id') id: string, @Body('message') message: string) {
 		return this.groupService.sendMessage(req['user'].sub, message, id);

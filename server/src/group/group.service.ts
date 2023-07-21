@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException, UnauthorizedExceptio
 import { PrismaService } from '../prisma/prisma.service';
 import { groupDto } from './group.dto';
 import * as bcrypt from 'bcrypt';
+import { group } from 'console';
 
 @Injectable()
 export class GroupService {
@@ -93,7 +94,11 @@ export class GroupService {
 						select:{
 							id:true,
 							name:true,
-									messages:true,
+							messages:{
+								include:{
+									sender:true
+								}
+							},
 							type:true,
 							owner: {
 								select:{
@@ -117,6 +122,7 @@ export class GroupService {
 					}
 				}	
 			})
+			user.groups[0].messages.reverse()
 			return user.groups[0];
 		}catch {
 			throw new UnauthorizedException()
@@ -127,35 +133,36 @@ export class GroupService {
 	async sendMessage(id:string,message: string, groupId : string) {
 		if (message.length === 0)
 			throw new UnauthorizedException()
-		try {
-
-			const user = await this.prisma.user.findUnique({
-				where:{
-					id:id,
-				},
-				select:{
-					groups:true
-				}
-			})
-			
-			const group = user.groups.filter(group => group.id === groupId)
-			if (!group)
-				throw new UnauthorizedException('your are unauthorized to send a message in this group')
-			const msg = await this.prisma.message.create({
-				data : {
-					content: message,
-					sender: {
-						connect: {
-							id: id
-						}
+			try {
+				
+				const user = await this.prisma.user.findUnique({
+					where:{
+						id:id,
 					},
-					group: {
-						connect: {
-							id: groupId
-						}
+					select:{
+						groups:true
 					}
-				}
-			});
+				})
+				
+				const group = user.groups.filter(group => group.id === groupId)
+				console.log(groupId)
+				if (!group)
+					throw new UnauthorizedException('your are unauthorized to send a message in this group')
+					const msg = await this.prisma.message.create({
+						data : {
+							content: message,
+							sender: {
+								connect: {
+									id: id
+								}
+							},
+							group: {
+								connect: {
+									id: groupId
+								}
+							}
+						}
+					});
 			await this.prisma.group.update({
 				where: {
 					id:groupId
@@ -167,6 +174,7 @@ export class GroupService {
 			return msg;
 		}
 		catch (e) {
+			console.log(e);
 			throw new UnauthorizedException('You can\'t send message in this group.')
 		}
 	}
@@ -199,23 +207,80 @@ export class GroupService {
 			throw new UnauthorizedException()
 		}
 	}
+
+
 	async searchForGroups(userid:string) {
 		const groups = await this.prisma.group.findMany({
 			where: {
 				NOT: {
-					type: 'private',
-					user: {
+					user:{
 						some:{
 							id:userid
 						}
+					},
+				},
+				'AND': {
+					'NOT' :{
+
+						type: 'private'
 					}
 				}
+				
 			},
 			select:{
+				id:true,
 				name: true,
 				type:true,
 			}
 		});
 		return groups
+	}
+	async joinGroup(userId: string,groupId: string,password:string) {
+		const group = await this.prisma.group.findUniqueOrThrow({
+			where: {
+				id:groupId
+			},
+			select:{
+				id:true,
+				name:true,
+				type:true,
+				password:true,
+				user:true
+			}
+		})
+		if (group.type === 'protected' && !bcrypt.compareSync(password,group.password))
+			throw new UnauthorizedException('group password incorrect')
+		else if (group.type === 'private')
+			throw new UnauthorizedException('this group is private')
+		group.user.map(user => {
+			if(user.id === userId) 
+				 throw new UnauthorizedException('this user already this in group')
+		})	
+		try{
+
+			const user = await this.prisma.user.update({
+				where: {
+					id:userId,
+				},
+				'data' :{
+					groups: {
+						connect:{
+							id:groupId,
+						}
+					},
+					groupmember:{
+						connect:{
+							id:groupId
+						}
+					}
+					
+				}
+			})
+			delete group.password
+			return group	
+		}
+		catch{
+			throw new UnauthorizedException()
+		}
 	}
 }
