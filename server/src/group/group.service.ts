@@ -145,7 +145,6 @@ export class GroupService {
 				})
 				
 				const group = user.groups.filter(group => group.id === groupId)
-				console.log(groupId)
 				if (!group)
 					throw new UnauthorizedException('your are unauthorized to send a message in this group')
 					const msg = await this.prisma.message.create({
@@ -160,7 +159,10 @@ export class GroupService {
 								connect: {
 									id: groupId
 								}
-							}
+							},
+						},
+						include:{
+							sender:true
 						}
 					});
 			await this.prisma.group.update({
@@ -174,7 +176,6 @@ export class GroupService {
 			return msg;
 		}
 		catch (e) {
-			console.log(e);
 			throw new UnauthorizedException('You can\'t send message in this group.')
 		}
 	}

@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-
 interface Input {
   firstName: string;
   lastName: string;
@@ -22,17 +21,19 @@ export default function Register() {
   });
 
   const handleSubmit = (e: any) => {
-    e.preventDefault()
-    axios.post('http://localhost:5555/auth/signup',input,{withCredentials:true})
-    .then(res => {
-      console.log(res);
-      router.push('/')
-    })
-    .catch(err=> {
-      console.log(err);
-    })
-  }
-
+    e.preventDefault();
+    axios
+      .post("http://192.168.8.106:5555/auth/signup", input, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -81,7 +82,10 @@ export default function Register() {
             placeholder="password"
             className="text-white text-2xl  bg-transparent placeholder:text-2xl border-b-2 py-3 border-white my-[30px] outline-none"
           />
-          <button type="submit" className="w-full text-white text-2xl h-[56px] my-[30px] bg-[#4044ED] shadow">
+          <button
+            type="submit"
+            className="w-full text-white text-2xl h-[56px] my-[30px] bg-[#4044ED] shadow"
+          >
             Sign Up
           </button>
           <button

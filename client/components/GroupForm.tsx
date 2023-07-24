@@ -4,11 +4,11 @@ import { HiEye, HiEyeOff } from "react-icons/hi";
 import { Group } from "./HomePage";
 
 interface Props {
-  setDisplayGroupForm: any
-  setGroups:any
+  setDisplayGroupForm: any;
+  setGroups: any;
 }
 
-export default function GroupForm({ setDisplayGroupForm,setGroups } : Props) {
+export default function GroupForm({ setDisplayGroupForm, setGroups }: Props) {
   const [groupForm, setGroupForm] = useState({
     name: "",
     type: "public",
@@ -24,12 +24,15 @@ export default function GroupForm({ setDisplayGroupForm,setGroups } : Props) {
 
   const createGroup = (e: any) => {
     e.preventDefault();
-    console.log(groupForm)
-    axios.post("http://localhost:5555/group/create", groupForm, { withCredentials: true })
+    console.log(groupForm);
+    axios
+      .post("http://192.168.8.106:5555/group/create", groupForm, {
+        withCredentials: true,
+      })
       .then((res) => {
-        setGroups((prev: Group[]) => [res.data,...prev])
-        setDisplayGroupForm(false)
-        setGroupForm({name: "",type: "pubilc",password: ""})
+        setGroups((prev: Group[]) => [res.data, ...prev]);
+        setDisplayGroupForm(false);
+        setGroupForm({ name: "", type: "pubilc", password: "" });
       })
       .catch((err) => {
         console.log(err);
@@ -75,7 +78,7 @@ export default function GroupForm({ setDisplayGroupForm,setGroups } : Props) {
       <div className="w-full flex justify-center  relative my-[50px]">
         <input
           disabled={!enablePassword}
-           value={groupForm.password}
+          value={groupForm.password}
           type={showPassword ? "text" : "password"}
           className="text-white text-2xl disabled:opacity-10 w-[80%] bg-transparent placeholder:text-2xl border-b-2 py-3 border-white  outline-none"
           placeholder="Group Password"
@@ -83,20 +86,19 @@ export default function GroupForm({ setDisplayGroupForm,setGroups } : Props) {
             setGroupForm({ ...groupForm, password: e.target.value })
           }
         />
-        {
-          enablePassword ?
+        {enablePassword ? (
           showPassword ? (
-          <HiEyeOff
-            onClick={() => setShowPassword(false)}
-            className="absolute cursor-pointer text-2xl text-gray-500 top-3 right-[60px]"
-          />
-        ) : (
-          <HiEye
-            onClick={() => setShowPassword(true)}
-            className="absolute cursor-pointer text-2xl text-gray-500 top-3 right-[60px]"
-          />
-        ) : null
-      }
+            <HiEyeOff
+              onClick={() => setShowPassword(false)}
+              className="absolute cursor-pointer text-2xl text-gray-500 top-3 right-[60px]"
+            />
+          ) : (
+            <HiEye
+              onClick={() => setShowPassword(true)}
+              className="absolute cursor-pointer text-2xl text-gray-500 top-3 right-[60px]"
+            />
+          )
+        ) : null}
       </div>
       <button
         type="submit"
@@ -105,10 +107,10 @@ export default function GroupForm({ setDisplayGroupForm,setGroups } : Props) {
         Create
       </button>
       <button
-      onClick={() => { 
-        setGroupForm({name: "",type: "pubilc", password: ""})
-        setDisplayGroupForm(false)
-      }}
+        onClick={() => {
+          setGroupForm({ name: "", type: "pubilc", password: "" });
+          setDisplayGroupForm(false);
+        }}
         className=" text-white text-2xl h-[56px] my-[30px] w-[80%] bg-[#3f3f3f] shadow"
       >
         Cancel
