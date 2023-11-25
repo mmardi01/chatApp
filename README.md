@@ -1,10 +1,10 @@
 # Chat Application
 
-## Real-time Chat using Next.js, NestJS, PostgreSQL, Prisma, and Socket.io
+## Real-time Chat using Next.js, NestJS, PostgreSQL, Prisma, Socket.io, and Redux Toolkit
 
 ### Overview
 
-This project is a real-time chat application built with Next.js for the frontend, NestJS for the backend, PostgreSQL as the database, Prisma ORM for data modeling and access, and Socket.io for real-time communication.
+This project is a real-time chat application built with Next.js for the frontend, NestJS for the backend, PostgreSQL as the database, Prisma ORM for data modeling and access, Socket.io for real-time communication, and Redux Toolkit for state management.
 
 ### Features
 
@@ -14,6 +14,7 @@ This project is a real-time chat application built with Next.js for the frontend
 - **PostgreSQL Database**: Persistent data storage for messages and user information.
 - **Prisma ORM**: Modern database toolkit for easy and type-safe database access.
 - **Socket.io**: Real-time communication for instant message updates.
+- **Redux Toolkit**: State management library for React applications.
 
 ### Technologies Used
 
@@ -22,3 +23,4 @@ This project is a real-time chat application built with Next.js for the frontend
 - PostgreSQL: Powerful open-source relational database system.
 - Prisma: Modern database toolkit for TypeScript and Node.js.
 - Socket.io: Real-time bidirectional event-based communication.
+- Redux Toolkit: State management library for React applications.
